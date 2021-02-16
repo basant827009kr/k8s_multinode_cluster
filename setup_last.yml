@@ -1,0 +1,32 @@
+---
+- hosts: tag_Name_MasterNode
+  roles:
+  -  role: master-node
+
+- hosts: tag_Name_WorkerNode
+  roles:
+  - role: worker-node
+
+- hosts: tag_Name_MasterNode
+  tasks:
+  - name: getting join command
+    shell: "kubeadm token create --print-join-command"
+    register: join
+
+  - name: debugging
+    debug:
+      var: join
+
+  - set_fact:
+      shared_variable: "{{ join.stdout }}"
+
+  - add_host:
+      name: "value"
+      shared_variable: "{{ shared_variable }}"
+
+- hosts: tag_Name_WorkerNode
+  vars:
+    join_link: "{{ hostvars['value']['shared_variable'] }}"
+  tasks:
+  - name: joining to master node..
+    shell: "{{ join_link }}"

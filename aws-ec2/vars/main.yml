@@ -1,0 +1,9 @@
+---
+# vars file for aws-ec2
+user: enter your aws_access_key
+pass: enter your aws_secret_key
+image: enter your image id
+subnet: enter your subnet mask
+key: enter your key name that you had created in aws
+reg: enter your region
+

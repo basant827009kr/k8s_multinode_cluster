@@ -1,0 +1,35 @@
+---
+# tasks file for aws-ec2
+
+- name: launching instance for master node
+  ec2: 
+    region: "{{ reg }}"
+    aws_access_key: "{{ user }}"
+    aws_secret_key: "{{ pass }}"
+    image: "{{ image }}"
+    wait: true
+    count: 1
+    instance_type: t2.micro
+    vpc_subnet_id: "{{ subnet }}"
+    group: default
+    key_name: "{{ key }}"
+    state: present
+    instance_tags:
+      Name: MasterNode
+
+- name: launching instance for worker node
+  ec2:
+    region: "{{ reg }}"
+    aws_access_key: "{{ user }}"
+    aws_secret_key: "{{ pass }}"
+    image: "{{ image }}"
+    wait: true
+    count: 2
+    instance_type: t2.micro
+    vpc_subnet_id: "{{ subnet }}"
+    group: default
+    key_name: "{{ key }}"
+    state: present
+    instance_tags:
+      Name: WorkerNode
+
